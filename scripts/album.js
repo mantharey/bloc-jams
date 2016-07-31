@@ -30,6 +30,22 @@ var albumPicasso = {
      ]
  };
 
+// My Own Example Album
+ var albumHollograms = {
+     title: 'Starlight',
+     artist: 'Jem and the Holograms',
+     label: 'Hasbro',
+     year: '1985',
+     albumArtUrl: 'assets/images/album_covers/19.png',
+     songs: [
+         { title: 'Synergy', duration: '1:11' },
+         { title: 'Micro-projector Earings', duration: '2:22' },
+         { title: 'Jerrica & Kimber', duration: '3:33'},
+         { title: 'Aja', duration: '4:44' },
+         { title: 'Shana', duration: '5:55'}
+     ]
+ };
+
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -42,13 +58,13 @@ var createSongRow = function(songNumber, songName, songLength) {
      return template;
  };
 
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
 var setCurrentAlbum = function(album) {
-     var albumTitle = document.getElementsByClassName('album-view-title')[0];
-     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-     var albumImage = document.getElementsByClassName('album-cover-art')[0];
-     var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
- 
      albumTitle.firstChild.nodeValue = album.title;
      albumArtist.firstChild.nodeValue = album.artist;
      albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
@@ -63,4 +79,14 @@ var setCurrentAlbum = function(album) {
  
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+
+    var albums = [albumPicasso, albumMarconi, albumHollograms];
+    var i = 0;
+    albumImage.addEventListener('click', function() {
+        do { setCurrentAlbum(albums[i]); //it's showing the first and third albums.  not sure how to get it to cycle through. 
+            i++;
+           }
+        while (i < albums.length);
+
+     });
  };
