@@ -4,7 +4,7 @@ var albumPicasso = {
     artist: 'Pablo Picasso',
     label: 'Cubism',
     year: '1881',
-    albumArtURL: 'assets/images/album_covers/01.png',
+    albumArtUrl: 'assets/images/album_covers/01.png',
     songs: [
         { title: 'Blue', duration: '4:26' },
          { title: 'Green', duration: '3:14' },
@@ -83,10 +83,10 @@ var setCurrentAlbum = function(album) {
     var albums = [albumPicasso, albumMarconi, albumHollograms];
     var i = 0;
     albumImage.addEventListener('click', function() {
-        do { setCurrentAlbum(albums[i]); //it's showing the first and third albums.  not sure how to get it to cycle through. 
-            i++;
-           }
-        while (i < albums.length);
-
+        if(i > albums.length - 1) {
+            i = 0;
+        };
+        setCurrentAlbum(albums[i]);
+        i++;
      });
  };
