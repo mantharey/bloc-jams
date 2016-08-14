@@ -37,7 +37,8 @@ var createSongRow = function(songNumber, songName, songLength) {
             $('.main-controls .play-pause').html(playerBarPlayButton);
             currentlyPlayingSongNumber = null;
             currentSongFromAlbum = null;
-            //setSong(null); passing null as a parameter breaks my code, unsure what if any refactoring I should do here.
+            //setSong(null); 
+            //passing null as a parameter breaks my code, unsure what if any refactoring I should do here.
         }
             
     };
@@ -159,7 +160,8 @@ var playerBarPauseButton = '<span class="ion-pause"></span>';
 var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
-//setSong(null); passing null as a parameter breaks my code, unsure what if any refactoring I should do here.
+//setSong(null); 
+//passing null as a parameter breaks my code, unsure what if any refactoring I should do here.
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
