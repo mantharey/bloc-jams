@@ -1,6 +1,21 @@
 var setSong = function(songNumber) {
+    if (currentSoundFile) {
+        currentSoundFile.stop();
+    }
     currentlyPlayingSongNumber = parseInt(songNumber);
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+    currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+        formats: ['mp3'],
+        preload: true
+    });
+    
+    setVolume(currentVolume);
+};
+
+var setVolume = function(volume) {
+    if (currentSoundFile) {
+        currentSoundFile.setVolume(volume);
+    }
 };
 
 var getSongNumberCell = function(number) {
@@ -30,17 +45,19 @@ var createSongRow = function(songNumber, songName, songLength) {
             //Switch from play to pause button to indicate a new song is playing
             $(this).html(pauseButtonTemplate);
             setSong(songNumber);
+            currentSoundFile.play();
             updatePlayerBarSong();
         } else if (currentlyPlayingSongNumber === songNumber) {
-            // Switch from pause to play button to pause currently playing song
-            $(this).html(playButtonTemplate);
-            $('.main-controls .play-pause').html(playerBarPlayButton);
-            currentlyPlayingSongNumber = null;
-            currentSongFromAlbum = null;
-            //setSong(null); 
-            //passing null as a parameter breaks my code, unsure what if any refactoring I should do here.
-        }
-            
+            if (currentSoundFile.isPaused()) {
+                $(this).html(pauseButtonTemplate);
+                $('.main-controls .play-pause').html(playerBarPauseButton);
+                currentSoundFile.play();
+            } else {
+                $(this).html(playButtonTemplate);
+                $('.main-controls .play-pause').html(playerBarPlayButton);
+                currentSoundFile.pause();
+            }
+        }      
     };
 
     var onHover = function(event) {
@@ -97,8 +114,7 @@ var nextSong = function () {
     var getLastSongNumber = function(index) {
         return index == 0 ? currentAlbum.songs.length : index;
     };
-    
-    //getting the value of the current song and incrementing the value, wraping the song around
+   
     var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
     currentSongIndex++;
     
@@ -107,8 +123,7 @@ var nextSong = function () {
     }
     
     setSong(currentSongIndex + 1);
-    
-    //update the player bar to show new song
+    currentSoundFile.play();
     updatePlayerBarSong();
     
     var lastSongNumber = getLastSongNumber(currentSongIndex);
@@ -124,7 +139,6 @@ var previousSong = function () {
         return index == (currentAlbum.songs.length - 1) ? 1 : index + 2;
     };
     
-    //getting the value of the current song and incrementing the value, wraping the song around
     var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
     currentSongIndex--;
     
@@ -132,9 +146,8 @@ var previousSong = function () {
         currentSongIndex = currentAlbum.songs.length - 1;
     }
     
-    setSong(currentSongIndex + 1); 
-    
-    //update the player bar to show new song
+    setSong(currentSongIndex + 1);
+    currentSoundFile.play();
     updatePlayerBarSong();
     
     var lastSongNumber = getLastSongNumber(currentSongIndex);
@@ -160,8 +173,8 @@ var playerBarPauseButton = '<span class="ion-pause"></span>';
 var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
-//setSong(null); 
-//passing null as a parameter breaks my code, unsure what if any refactoring I should do here.
+var currentSoundFile = null;
+var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
